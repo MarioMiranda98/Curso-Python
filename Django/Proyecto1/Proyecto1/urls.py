@@ -17,9 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from Proyecto1.views import saludo
 from Proyecto1.views import despedida
+from Proyecto1.views import dameFecha
+from Proyecto1.views import calculaEdad
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('saludo/', saludo),
     path("nosveremos/", despedida),
+    path("fecha/", dameFecha),
+    path("edades/<int:anio>/<int:edadPersona>", calculaEdad),
 ]
