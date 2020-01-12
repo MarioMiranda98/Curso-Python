@@ -1,6 +1,17 @@
 from classes.Bcolors import Bcolors
 from classes.Person import Person
 from classes.Magic import Magic
+from classes.Item import Item
+
+print("\n\n")
+print("NAME               HP                                     MP")
+
+print("                    _________________________             __________")
+print(Bcolors.BOLD + "Valos:      "
+    + Bcolors.OKGREEN + "460/460|█████████████████████████|" + Bcolors.ENDC + "    "+ Bcolors.OKBLUE + "200/200|██████████|" + Bcolors.ENDC)
+
+print("                    _________________________             __________")
+print("Valos:    1200/1200|█████████████████████████|      65/65|██████████|")
 
 #Create Black Magic
 fire = Magic("Fire", 10, 100, "Black")
@@ -13,9 +24,23 @@ quake = Magic("Quake", 14, 140, "Black")
 cure = Magic("Cure", 12, 120, "White")
 cura = Magic("Cura", 18, 200, "White")
 
+#Create Item
+potion = Item("Potion", "potion", "Heals 50 hp", 50)
+hiPotion = Item("Hi - Potion", "potion", "Heals 100 hp", 100)
+superPotion = Item("Super Potion", "potion", "Heals 500 hp", 500)
+elixer = Item("Elixer", "elixer", "Fully restores hp/mp of one party member", 9999)
+hiElixier = Item("Hi - Elixer", "elixer", "Fully restores party's hp/mp", 9999)
+
+grenade = Item("Grenade", "attack", "Deals 500 damage", 500)
+
+playerSpells = [fire, thunder, blizzard, meteor, cure, cura]
+playerItems = [{"item" : potion, "quantity" : 5}, {"item" : hiPotion, "quantity" : 5}, 
+               {"item" : superPotion, "quantity" : 5}, {"item" : elixer, "quantity" : 5}, 
+               {"item" : hiElixier, "quantity" : 2}, {"item" : grenade, "quantity" : 5}]
+
 #Instantiate People
-player = Person(460, 200, 60, 34, [fire, thunder, blizzard, meteor, cure, cura])
-enemy = Person(1200, 65, 45, 25, [])
+player = Person(460, 200, 60, 34, playerSpells, playerItems)
+enemy = Person(1200, 65, 45, 25, [], [])
 
 running = True
 i = 0
@@ -37,6 +62,9 @@ while running:
         player.chooseMagic()
         magicChoice = input("Choose Magic: ")
         indexMagic = int(magicChoice) - 1
+
+        if indexMagic == -1:
+            continue
         
         magicDamage = player.magic[indexMagic].generateDamage()
         spell = player.magic[indexMagic].name
@@ -57,7 +85,32 @@ while running:
 
         player.reduceMp(cost)
         print("Enemy Hp: " + str(enemy.getHp()))
+    elif index == 2:
+        player.chooseItem()
+        itemChoice = input("Choose Item: ")
+        indexItem = int(itemChoice) - 1
 
+        if indexItem == -1:
+            continue
+            
+        item = player.items[indexItem]
+
+        if item["quantity"] <= 0:
+            print(Bcolors.FAIL + "\n" + "None Left..." + Bcolors.ENDC)
+            continue
+
+        if item["item"].type == "potion":
+            player.heal(item.prop)
+            print(Bcolors.OKGREEN + "\n" + item["item"].name + " heals for " + str(item["item"].prop) + " hp" + Bcolors.ENDC)
+        elif item["item"].type == "elixer":
+            player.hp = player.maxHp
+            player.mp = player.maxMp
+            print(Bcolors.OKGREEN + "\nFully restores hp/mp" + Bcolors.ENDC)
+        elif item["item"].type == "attack":
+            enemy.takeDamage(item["item"].prop)
+            print(Bcolors.OKBLUE + "\n" + str(item["item"].name) + " deals " + str(item["item"].prop) + " points of Damage " + Bcolors.ENDC)
+         
+        item["quantity"] -= 1
 
 
     enemyChoice = 1
