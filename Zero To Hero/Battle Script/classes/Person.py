@@ -2,7 +2,8 @@ import random
 from .Bcolors import Bcolors
 
 class Person():
-    def __init__(self, hp, mp, atk, df, magic, items):
+    def __init__(self, name, hp, mp, atk, df, magic, items):
+        self.name = name
         self.maxHp = hp
         self.hp = hp
         self.maxMp = mp
@@ -49,6 +50,7 @@ class Person():
     def chooseAction(self):
         i = 1
 
+        print("\n" + Bcolors.BOLD + self.name + Bcolors.ENDC)
         print(Bcolors.OKBLUE + Bcolors.BOLD + "Actions" + Bcolors.ENDC)
         for item in self.actions:
             print("   " + str(i) + ": " + str(item))
@@ -69,3 +71,51 @@ class Person():
         for item in self.items:
             print("   " + str(i) + ":" + str(item["item"].name) + ", desc: " + str(item["item"].description) + " {x" + str(item["quantity"]) + "}")
             i += 1
+        
+    def getStats(self):
+        hpBar = ""
+        hpBarTicks = (self.hp / self.maxHp) * 100 / 4
+
+        mpBar = ""
+        mpBarTicks = (self.mp / self.maxMp) * 100 / 10
+
+        while hpBarTicks > 0:
+            hpBar += "█"
+            hpBarTicks -= 1
+
+        while len(hpBar) < 25:
+            hpBar += " "
+
+        while mpBarTicks > 0:
+            mpBar += "█"
+            mpBarTicks -= 1
+
+        while len(mpBar) < 10:
+            mpBar += " "
+
+        print(Bcolors.BOLD + str(self.name) + ":       "
+        + Bcolors.OKGREEN + str(self.hp) + "/" + str(self.maxHp) +" "+ str(hpBar) + Bcolors.ENDC + "    "+ Bcolors.OKBLUE + str(self.mp) + "/" + str(self.maxMp) +" |" + mpBar +"|" + Bcolors.ENDC)
+
+    def getEnemyStats(self):
+        hpBar = ""
+        hpBarTicks = (self.hp / self.maxHp) * 100 / 2
+
+        mpBar = ""
+        mpBarTicks = (self.mp / self.maxMp) * 100 / 4  
+
+        while hpBarTicks > 0:
+            hpBar += "█"
+            hpBarTicks -= 1
+
+        while len(hpBar) < 50:
+            hpBar += " "
+
+        while mpBarTicks > 0:
+            mpBar += "█"
+            mpBarTicks -= 1
+
+        while len(mpBar) < 10:
+            mpBar += " "
+
+        print(Bcolors.BOLD + str(self.name) + ":       "
+        + Bcolors.OKGREEN + str(self.hp) + "/" + str(self.maxHp) +" "+ str(hpBar) + Bcolors.ENDC + "    "+ Bcolors.OKBLUE + str(self.mp) + "/" + str(self.maxMp) +" |" + mpBar +"|" + Bcolors.ENDC)
