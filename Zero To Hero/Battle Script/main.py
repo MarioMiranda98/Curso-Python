@@ -38,10 +38,14 @@ playerItems = [{"item" : potion, "quantity" : 5}, {"item" : hiPotion, "quantity"
 player = Person("Mario", 3260, 200, 60, 34, playerSpells, playerItems)
 player2 = Person("Mario", 4160, 200, 60, 34, playerSpells, playerItems)
 player3 = Person("Robot", 3889, 200, 60, 34, [], playerItems)
-enemy = Person("Evil Mario", 1200, 65, 45, 25, [], [])
+
+enemy = Person("Evil Mario", 18200, 701, 525, 25, [], [])
+enemy2 = Person("MXMXM", 1250, 130, 560, 325, [], [])
+enemy3 = Person("Imp", 1250, 130, 560, 325, [], [])
 
 players = [player, player2, player3]
+enemies = [enemy, enemy2, enemy3]
 
-game = Game(players, enemy)
+game = Game(players, enemies)
 game.announcement()
 game.play()
